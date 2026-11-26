@@ -1,0 +1,14 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /frames/{frameId} {
+      // Shared frame pages can read frame records.
+      allow read: if true;
+
+      // Only the intended admin account can create, edit, or delete frames.
+      allow create, update, delete: if request.auth != null
+        && request.auth.token.email == "fumcsoh@admin.com";
+    }
+  }
+}
